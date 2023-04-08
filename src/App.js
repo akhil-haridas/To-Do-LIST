@@ -45,22 +45,28 @@ function App() {
         
 
     const addItem = () => {
-        // Retrieve previously saved todos from localStorage
-        const savedToDos = localStorage.getItem('toDos');
-        let todosArray = [];
+        if (toDo.trim() !== '') {
+            // Retrieve previously saved todos from localStorage
+            const savedToDos = localStorage.getItem('toDos');
+            let todosArray = [];
 
-        if (savedToDos) {
-            todosArray = JSON.parse(savedToDos);
-        }
+            if (savedToDos) {
+                todosArray = JSON.parse(savedToDos);
+            }
 
-        // Concatenate the new todo item to the end of the array
-        const newToDos = [{id:Date.now() , text:toDo , status:false,important:false},...todosArray];
+            // Concatenate the new todo item to the end of the array
+            const newToDos = [{ id: Date.now(), text: toDo, status: false, important: false }, ...todosArray];
 
-        // Save the new todos to localStorage and update the state
-        localStorage.setItem('toDos', JSON.stringify(newToDos));
-        setToDos(newToDos);
-        setToDo('')
+            // Save the new todos to localStorage and update the state
+            localStorage.setItem('toDos', JSON.stringify(newToDos));
+            setToDos(newToDos);
+            setToDo('')
 
+        } else {
+            swal("Error!", "Please enter a valid input", "error");
+            return;
+         }
+        
  
     };
     
@@ -230,7 +236,7 @@ function App() {
         </section>
         <section className={`add-panel ${isPanelOpen ? 'open' : ''}`}>
             <div>
-                <input className="add-panel__input" type="text" value={toDo} onChange={(e)=>setToDo(e.target.value)} onKeyUp={handleKeyUp} />
+                <input className="add-panel__input" type="text" value={toDo} onChange={(e)=>setToDo(e.target.value)} onKeyUp={handleKeyUp} required/>
                 <button className="add-panel__button" onClick={addItem}> 
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"  enableBackground="new 0 0 32 32" viewBox="0 0 32 32" id="send">
                         <path
